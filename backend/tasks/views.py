@@ -17,5 +17,12 @@ class TaskListCreateView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-# Create your views here.
+    
+class TaskDetail(APIView):
+    def delete(self, request, pk):
+        try: 
+            task = Task.objects.get(pk=pk)
+            task.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Task.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
